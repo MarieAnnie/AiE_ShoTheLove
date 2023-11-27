@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>CodePen - AiE #ShoTheLove</title>
+  <link rel="stylesheet" href="./style.css">
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<body>
+  <style>
+#customers {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#customers td, #customers th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#customers tr:nth-child(even){background-color: #f2f2f2;}
+
+#customers tr:hover {background-color: #ddd;}
+
+#customers th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #04AA6D;
+  color: white;
+}
+
+/* Define variables for your colors */
+:root {
+  --color-shades-dark: rgb(25, 25, 25);
+}
+
+/* Use the alternative box model
+Details: <https://web.dev/learn/css/box-model/> */
+*{
+  box-sizing: border-box;
+}
+
+
+
+/* Link styling */
+a {
+  --text-color: var(--color-shades-dark);
+  border-block-end: 3px solid var(--border-color, transparent);
+  color: var(--text-color);
+  display: inline-block;
+  margin-block-end: 0.5rem; /* See note at the bottom of this chapter */
+  margin-inline-end: 0.5rem;
+  padding: 0.1rem;
+  text-decoration: none;
+}
+
+/* Change the border-color on :hover and :focus */
+a:where(:hover, :focus) {
+  --border-color: var(--text-color);
+}
+</style>
+  <nav id="sidebar">
+    <h2>AiE</h2>
+    <ul>
+      <li><a class="nav-item" href="#Introduction">PvP March Layers</a></li>
+      <li>
+        <a class="nav-item" href="#html_editors">PvP Generals (Free to Play)</a>
+      </li>
+      <li>
+        <a class="nav-item" href="#html_elements">PvP gear</a>
+      </li>
+      <li><a class="nav-item" href="#html_attributes">Subordinate City Generals</a></li>
+      <li><a class="nav-item" href="#html_heading">Gathering generals</a></li>
+      <li>
+        <a class="nav-item" href="#html_paragraph">PvP checklist</a>
+      </li>
+    </ul>
+  </nav>
+  <main id="documentation">
+    <section id="Introduction">
+      <h2>PvP March Layers</h2>
+      <article>
+        <p>
+          App to calculate layers based on the march size
+        </p>
+           <form action="/action_page.php" method="get">
+   <form action="/action_page.php">
+    <label for="TopTier">Choose top tier</label>
+    <select id="tier" name="tier">
+      <option value="t12">T12</option>
+      <option value="t13">T13</option>
+      <option value="t14">T14</option>
+    </select>
+	
+	<br> <br>
+	
+	<label for="TroopType">Choose troop type</label>
+    <select id="type" name="type">
+      <option value="ground">Ground</option>
+      <option value="ranged">Ranged</option>
+      <option value="mounted">Mounted</option>
+	  <option value="siege">Siege</option>
+    </select>
+  </form>
+     
+   <p>Enter march size</p>
+   <input type = "text" id = "size"> <br> <br>
+   <button id = "btn" onclick = "PrintLayers()"> Calculate Layers </button>
+   
+   <p id = "table"></p>
+   <table id="customers">
+  <tr>
+    <th>Tier</th>
+    <th>Ground</th>
+    <th>Ranged</th>
+	<th>Mounted</th>
+	<th>Siege</th>
+  </tr>
+  <tr>
+    <td>T14</td>
+    <td id='t14g'>0</td>
+    <td id='t14r'>0</td>
+	<td id='t14m'>0</td>
+	<td id='t14s'>0</td>
+  </tr>
+  <tr>
+    <td>T13</td>
+    <td id='t13g'>0</td>
+    <td id='t13r'>0</td>
+	<td id='t13m'>0</td>
+	<td id='t13s'>0</td>
+  </tr>
+    <tr>
+    <td>T12</td>
+    <td id='t12g'>0</td>
+    <td id='t12r'>0</td>
+	<td id='t12m'>0</td>
+	<td id='t12s'>0</td>
+  </tr>
+    <tr>
+    <td>T11</td>
+    <td id='t11g'>0</td>
+    <td id='t11r'>0</td>
+	<td id='t11m'>0</td>
+	<td id='t11s'>0</td>
+  </tr>
+  </tr>
+    <tr>
+    <td>T10</td>
+    <td id='t10g'>0</td>
+    <td id='t10r'>0</td>
+	<td id='t10m'>0</td>
+	<td id='t10s'>0</td>
+  </tr>
+   </tr>
+    <tr>
+    <td>T9</td>
+    <td id='t9g'>0</td>
+    <td id='t9r'>0</td>
+	<td id='t9m'>0</td>
+	<td id='t9s'>0</td>
+  </tr>           
+  <tr>
+    <td>T1-T8</td>
+    <td id='t1g'>0</td>
+    <td id='t1r'>0</td>
+	<td id='t1m'>0</td>
+	<td id='t1s'>0</td>
+  </tr>
+
+
+</table>
+    
+   <script>
+      var table = document.getElementById("table");
+      function PrintLayers() {
+    var size = parseInt(document.getElementById("size").value)
+		var tier = document.getElementById("tier").value
+		var type = document.getElementById("type").value
+    
+    var small_layer = Math.ceil(size/1000000) * 100
+    
+    if (type == 'siege') {
+      var layer_perc = 0.013
+    } else {
+      var layer_perc = 0.05
+    }
+          
+    if (tier == 't12') {
+      var layer = Math.round((layer_perc * size - 36 * small_layer)/10.5)
+    } else if (tier == 't13') {
+      var layer = Math.round((layer_perc * size - 40 * small_layer)/10.5)
+    } else {
+      var layer = Math.round((layer_perc * size - 44 * small_layer)/10.5)
+    }
+    
+    if (type == 'ranged') {
+      top1 = Math.round(0.4 * size)
+      top2 = Math.round(0.25 * size)
+      top3 = Math.round(0.2 * size)
+      top4 = Math.round(0.1 * size)
+    }    
+        
+    if (type == 'ground') {
+      top1 = Math.round(0.45 * size)
+      top2 = Math.round(0.2975 * size)
+      top3 = Math.round(0.2 * size)
+      top4 = Math.round(0.0025 * size)
+    }
+        
+    if (type == 'mounted') {
+      top1 = Math.round(0.25 * size)
+      top2 = Math.round(0.325 * size)
+      top3 = Math.round(0.25 * size)
+      top4 = Math.round(0.125 * size)
+    }
+    
+    if (type == 'siege') {
+      top1 = Math.round(0.377 * size)
+      top2 = Math.round(0.604 * size)
+      top3 = Math.round(0.003 * size)
+      top4 = Math.round(0.003 * size)
+    }
+    		 
+		t1g.innerText = small_layer
+		t1r.innerText = small_layer
+		t1m.innerText = small_layer
+		t1s.innerText = small_layer
+    
+    if (tier == 't14') {
+      t10g.innerText = small_layer
+		  t10r.innerText = small_layer
+		  t10m.innerText = small_layer
+		  t10s.innerText = small_layer
+    }
+    if (tier == 't14' || tier == 't13') {
+      t9g.innerText = small_layer
+		  t9r.innerText = small_layer
+		  t9m.innerText = small_layer
+		  t9s.innerText = small_layer
+    } 
+    
+    t11g.innerText = layer
+		t11r.innerText = layer
+		t11m.innerText = layer
+		t11s.innerText = layer
+        
+		t12g.innerText = layer
+		t12r.innerText = layer
+		t12m.innerText = layer
+		t12s.innerText = layer
+    
+    if (tier == 't12') {
+      t9g.innerText = Math.round(layer/2)
+		  t9r.innerText = Math.round(layer/2)
+		  t9m.innerText = Math.round(layer/2)
+		  t9s.innerText = Math.round(layer/2)
+      t10g.innerText = layer
+		  t10r.innerText = layer
+		  t10m.innerText = layer
+		  t10s.innerText = layer
+    } else if (tier == 't13') {
+      t10g.innerText = Math.round(layer/2)
+		  t10r.innerText = Math.round(layer/2)
+		  t10m.innerText = Math.round(layer/2)
+		  t10s.innerText = Math.round(layer/2)
+      t11g.innerText = layer
+		  t11r.innerText = layer
+		  t11m.innerText = layer
+		  t11s.innerText = layer
+    }else if (tier == 't14') {
+      t11g.innerText = Math.round(layer/2)
+		  t11r.innerText = Math.round(layer/2)
+		  t11m.innerText = Math.round(layer/2)
+		  t11s.innerText = Math.round(layer/2)
+    }
+    
+    if (tier == 't13' || tier == 't14') {
+      t13g.innerText = layer
+		  t13r.innerText = layer
+		  t13m.innerText = layer
+		  t13s.innerText = layer
+    }  
+    
+    if (tier == 't14') {
+      t14g.innerText = layer
+		  t14r.innerText = layer
+		  t14m.innerText = layer
+		  t14s.innerText = layer
+    }  
+      
+		if (type == 'ground') {
+			if (tier == 't12') {
+        t12g.innerText = top1
+        t11g.innerText = top2
+        t10g.innerText = top3
+        t9g.innerText = top4
+      } else if (tier == 't13') {
+        t13g.innerText = top1
+        t12g.innerText = top2
+        t11g.innerText = top3
+        t10g.innerText = top4
+      } else if (tier == 't14') {
+        t14g.innerText = top1
+        t13g.innerText = top2
+        t12g.innerText = top3
+        t11g.innerText = top4
+      }
+    }
+
+		if (type == 'ranged') {
+			if (tier == 't12') {
+        t12r.innerText = top1
+        t11r.innerText = top2
+        t10r.innerText = top3
+        t9r.innerText = top4
+      } else if (tier == 't13') {
+        t13r.innerText = top2
+        t12r.innerText = top1
+        t11r.innerText = top3
+        t10r.innerText = top4
+      } else if (tier == 't14') {
+        t14r.innerText = top3
+        t13r.innerText = top2
+        t12r.innerText = top1
+        t11r.innerText = top4
+      }
+    }
+        
+		if (type == 'mounted') {
+			if (tier == 't12') {
+        t12m.innerText = top1
+        t11m.innerText = top2
+        t10m.innerText = top3
+        t9m.innerText = top4
+      } else if (tier == 't13') {
+        t13m.innerText = top1
+        t12m.innerText = top2
+        t11m.innerText = top3
+        t10m.innerText = top4
+      } else if (tier == 't14') {
+        t14m.innerText = top1
+        t13m.innerText = top2
+        t12m.innerText = top3
+        t11m.innerText = top4
+      }
+    }
+   
+		if (type == 'siege') {
+			if (tier == 't12') {
+        t12s.innerText = top1
+        t11s.innerText = top2
+        t10s.innerText = top3
+        t9s.innerText = top4
+      } else if (tier == 't13') {
+        t13s.innerText = top1
+        t12s.innerText = top2
+        t11s.innerText = top3
+        t10s.innerText = top4
+      } else if (tier == 't14') {
+        t14s.innerText = top1
+        t13s.innerText = top2
+        t12s.innerText = top3
+        t11s.innerText = top4
+      }
+    }
+	} 
+	
+   </script>
+        
+      </article>
+    </section>
+    <section id="html_editors">
+      <h2>PvP Generals (Free to Play)</h2>
+      <article>
+        <Strong> Ranged General </Strong>  <br>
+        <p>
+          Elektra and Tomyris can be obtained from relics while Minamoto can be obtained from the tavern. Tomyris has a higher fragment drop rate than Elektra.
+        </p>
+        
+        <table id="customers">
+        <tr>
+          <th>General</th>
+          <th>Attack</th>
+          <th>Defense</th>
+	        <th>HP</th>
+	        <th>March size</th>
+          <th>Rally Capacity</th>
+          <th>Debuff</th>
+        </tr>
+          <tr>
+          <td>Minamoto</td>
+          <td>348.6</td>
+          <td>268.6</td>
+	        <td>292.6</td>
+	        <td>12</td>
+          <td>0</td>
+          <td>-</td>
+        </tr>
+          <tr>
+          <td>Elektra</td>
+          <td>365</td>
+          <td>294.8</td>
+	        <td>263.2</td>
+	        <td>28</td>
+          <td>0</td>
+          <td>-</td>
+        </tr>
+          <tr>
+          <td>Tomyris</td>
+          <td>352.4</td>
+          <td>277</td>
+	        <td>329.2</td>
+	        <td>26</td>
+          <td>10</td>
+          <td>-</td>
+        </tr>
+        </table> <br>
+        
+        
+        <Strong>Mounted Generals</Strong>  <br>
+        <p>
+          Hannibal is avaible in the tavern. Roland, Custer and Li Namoasa are available in the relics.
+        </p>
+        
+        <table id="customers">
+        <tr>
+          <th>General</th>
+          <th>Attack</th>
+          <th>Defense</th>
+	        <th>HP</th>
+	        <th>March size</th>
+          <th>Rally Capacity</th>
+          <th>Debuff</th>
+        </tr>
+          <tr>
+          <td>Hannibal</td>
+          <td>373.8</td>
+          <td>273.2</td>
+	        <td>332.4</td>
+	        <td>12</td>
+          <td>8</td>
+          <td>-</td>
+        </tr>
+          <tr>
+          <td>Roland</td>
+          <td>356.4</td>
+          <td>319</td>
+	        <td>296.8</td>
+	        <td>28</td>
+          <td>0</td>
+          <td>-20% ranged atk</td>
+        </tr>
+          <tr>
+          <td>George A. Custer</td>
+          <td>369.2</td>
+          <td>287.6</td>
+	        <td>308.4</td>
+	        <td>22</td>
+          <td>8</td>
+          <td>-</td>
+        </tr>
+          <tr>
+          <td>Li Naomasa</td>
+          <td>312.6</td>
+          <td>261.2</td>
+	        <td>388.6</td>
+	        <td>26</td>
+          <td>0</td>
+          <td>-10% all HP</td>
+        </tr>
+        </table> <br>
+        
+        <Strong>Ground Generals</Strong>  <br>
+        <p>
+          Elise and Scipio can be redeemed during the trial of knight event. It is recommend to ascend generals only during this event. Maeda and Soult are available in the relics and Robert the Bruce is available in the tavern.
+        </p>
+        
+        <table id="customers">
+        <tr>
+          <th>General</th>
+          <th>Attack</th>
+          <th>Defense</th>
+	        <th>HP</th>
+	        <th>March size</th>
+          <th>Rally Capacity</th>
+          <th>Debuff</th>
+        </tr>
+          <tr>
+          <td>Elise</td>
+          <td>369.6</td>
+          <td>319.6</td>
+	        <td>346</td>
+	        <td>26</td>
+          <td>0</td>
+          <td>-</td>
+        </tr>
+          <tr>
+          <td>Scipio Africanus</td>
+          <td>329.2</td>
+          <td>339.8</td>
+	        <td>333.4</td>
+	        <td>18</td>
+          <td>8</td>
+          <td>-</td>
+        </tr>
+          <tr>
+          <td>Maeda Toshiie</td>
+          <td>365.4</td>
+          <td>300.4</td>
+	        <td>320</td>
+	        <td>18</td>
+          <td>8</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>Soult</td>
+          <td>338.6</td>
+          <td>300.8</td>
+	        <td>318.8</td>
+	        <td>12</td>
+          <td>8</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td>Robert de Bruce</td>
+          <td>308</td>
+          <td>261</td>
+	        <td>301.8</td>
+	        <td>26</td>
+          <td>0</td>
+          <td>-</td>
+        </tr>
+        </table> <br>
+        
+        <Strong>Siege Generals</Strong>  <br>
+        <p>
+          Ulysse is avaible at the tavern and in the tavern chest.
+        </p>
+        
+        <table id="customers">
+        <tr>
+          <th>General</th>
+          <th>Attack</th>
+          <th>Defense</th>
+	        <th>HP</th>
+	        <th>March size</th>
+          <th>Rally Capacity</th>
+          <th>Debuff</th>
+        </tr>
+          <tr>
+          <td>Ulysse S. Grant</td>
+          <td>335.6</td>
+          <td>271.6</td>
+	        <td>258.4</td>
+	        <td>32</td>
+          <td>0</td>
+          <td>-</td>
+        </tr>
+          
+        </table> <br>
+        
+        
+      </article>
+    </section>
+    <section id="html_elements">
+      <h2>PvP gear</h2>
+      <p>
+        When gearing your generals with red equipment, it's best to have at least from the dragon/ares/imperal set of the same level and  of the Achaemenidae/Parthian set (same levle again) to unlock the first set bonus of increase attack. The last items can be of either set.
+      <article>
+        <strong>Ranged (red combination)</strong> <br>
+        <p>
+          Rnaged
+        </p>
+        <pre>
+        Ares Bow
+        Fearless Ares Helmet
+        Majestic Imperial Armor (Courageous Dragon Armor) for ranged and siege attack debuff or Dominant Imperial Armor for Ranged troop HP
+        Courageous Achaemenidae Leg Armor 
+        Fearless Achaemenidae Boots
+        Fearless Achaemenidae Ring
+      </pre>
+      </article>
+    </section>
+    <section id="html_attributes">
+      <h2>Subordinate city generals</h2>
+      <article>
+        <p>
+          There are 2 types of sub generals: peacetime and PvP. Peacetime sub generals should focus on the contruction of your subs. The higher level they are the stronger the troops are and the more gold they produce. PvP sub generals focus on debuffs. They can be used both for attacking and defending the main city but not both simultaneously. 
+        </p>
+        <Strong>Peacetime generals</Strong> 
+        <p>
+        Empress Wu and Jefferson both focus on construction speed. By cultivating their leadership and their politics to increase gold production, training speed and construction speed. For skill books, gold production, training capacity and training speed can added. If you want to train troops, Charles Martel is very good as he also has some increasing construction speed. All of these generals are available in the tavern. Sub cities can be gold oriented, balances of troop training oriented.
+        </p>
+        <Strong>PvP generals</Strong> 
+        <p>
+        The biggest part of the debuff is coming from the gear. All of the sub generals should be fully equiped with Achaemenidae or its upgrade. The debuff should primaly focus on attack for ranged and siege and on HP for ground and mounted. Any unused spiritual animals can be equipped on sub generals as they have debuffs. The following generals are good generals available in the tarvern: Andrew Jackson, Harald, Arminius, Nero and Marguerite. If you generals always died during attacks, the re
+        </p>
+        
+      </article>
+    </section>
+    <section id="html_heading">
+      <h2>Gathering generals</h2>
+      <p>
+        A good gathering set up can get you over 1B of resources per day if you have 6 marches and 6 Jindeok and a good amount of Korean subs. The best set up is done by having specialized gatherers for one specific resource. 
+      </p>
+      <p>
+        The main gathering general should be Jindeok and if you don't have enough of her, Constance should be used. Politics and level should be max out and leadership should be as high as possible to increase the speed march. March speed and troop loading skill books should be used on Jindeok to avoid any conflict with the assitants (mostly Gaius).
+      </p>
+      <p>
+        All assistant should have a gathering speed book and an exploitation book (if you have them) for the specific resource they are specialized for. Gaius should be used for ore. Lucy and Gaius can be used for stone and lumber. Shimazo should be used for food.
+      </p>
+      <p>
+        <Strong> Ore gathering </Strong>  <br>
+        Main: Jindeok or Constance (march speed and troop load skill books)  <br>
+        Assistant : Gaius (ore exploitation and ore gathering speed books)
+      </p>
+      <pre>
+        King's bow with ore gathering speed refinement
+        Champion's armor (optional, march speed refinement)
+        Fearless King's boots
+        Courageous King's helmet with ore gathering speed refinement
+        Champion's leg armor with ore gathering speed refinement
+      </pre>
+ 
+      <p>
+        <Strong> Lumber gathering </Strong>  <br>
+        Main: Jindeok or Constance (march speed and troop load skill books)  <br>
+        Assistant : Gaius or Lucy (lumber exploitation and lumber gathering speed books)
+      </p>
+      <pre>
+        King's axe with lumber gathering speed refinement
+        Fearless King's armor
+        Champion's boots (optional, march speed refinement)
+        Champion's Helmet with lumber gathering speed refinement
+        Courageous King's Leg armor with lumber gathering speed refinement
+      </pre>
+      
+      <p>
+        <Strong> Ore gathering </Strong>  <br>
+        Main: Jindeok or Constance (march speed and troop load skill books)  <br>
+        Assistant : Gaius (ore exploitation and ore gathering speed books)
+      </p>
+      <pre>
+        King's bow with ore gathering speed refinement
+        Champion's armor
+        Fearless King's boots (optional, march speed refinement)
+        Courageous King's helmet with ore gathering speed refinement
+        Champion's leg armor with ore gathering speed refinement
+      </pre>
+      
+      <p>
+        <Strong> Food gathering </Strong>  <br>
+        Main: Jindeok or Constance (march speed and troop load skill books)  <br>
+        Assistant : Gaius (ore exploitation and ore gathering speed books)
+      </p>
+      <pre>
+        King's spear with food gathering speed refinement
+        Courageous King's armor
+        Champion's boots (optional, march speed refinement)
+        Fearless King's helmet with food gathering speed refinement
+        Champion's leg armor with food gathering speed refinement
+      </pre>
+      
+    </section>
+    <section id="html_paragraph">
+      <h2>PvP Checklist</h2>
+      <article>
+        <p>
+          ...
+        </p>
+      </article>
+    </section>
+    <section id="html_style">
+      <h2>HTML Style</h2>
+      <article>
+        <p>
+          Every browser has a specific engine that parses the HTML document and displays a default style of the page content.
+        </p>
+        <pre>&lt;body style="background-color:yellow;"&gt;
+
+                &lt;h1&gt;TechGeekBuzz&lt;/h1&gt;
+                &lt;p&gt;Welcome to TechGeekBuzz.&lt;/p&gt;
+                
+                &lt;/body&gt;</pre>
+      </article>
+    </section>
+    <section id="html_formatting">
+      <h2>HTML Formatting</h2>
+      <article>
+        <p>
+          In HTML, we have many special elements that can provide special meaning to text content.
+        </p>
+        <div class="hscroll">
+          <table>
+            <tbody>
+              <tr>
+                <td>
+                  <a href="https://www.techgeekbuzz.com/html-elements/">
+                    HTML Elements
+                  </a>
+                </td>
+                <td>
+                  Description
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  &lt;b&gt;
+                </td>
+                <td>
+                  Bold the text
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  &lt;strong&gt;
+                </td>
+                <td>
+                  An alternative for &lt;b&gt;, which tell that this text is essential.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  &lt;i&gt;
+                </td>
+                <td>
+                  Italic the text
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  &lt;em&gt;
+                </td>
+                <td>
+                  Similar to italic but used when we want to emphasize the text.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  &lt;mark&gt;
+                </td>
+                <td>
+                  It marks the text with a default "yellow" background colour
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  &lt;small&gt;
+                </td>
+                <td>
+                  Decrease the text size
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  &lt;del&gt;
+                </td>
+                <td>
+                  It prints a cross line over the text.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  &lt;ins&gt;
+                </td>
+                <td>
+                  Represents the inserted text by putting an underline.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  &lt;sub&gt;
+                </td>
+                <td>
+                  This element is used to display the subscript.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  &lt;sup&gt;
+                </td>
+                <td>
+                  It can make a text superscript.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </article>
+    </section>
+
+    <section id="reference">
+      <h2>Reference</h2>
+      <article>
+        <ul>
+          <li>
+            All the documentation in this page is taken from
+            <a href="https://www.techgeekbuzz.com/tutorial/html/" target="_blank">HTML Tutorial</a>
+          </li>
+        </ul>
+      </article>
+    </section>
+  </main>
+</body>
+<!-- partial -->
+  
+</body>
+</html>
