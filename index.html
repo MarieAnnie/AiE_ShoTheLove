@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html>
+<link href="./resources/css/index.css" type="text/css" rel="stylesheet">
+<head>
+  <title>ShoTheLove</title>
+</head>
+
+<!DOCTYPE html>
+<html>
+<link href="./resources/css/index.css" type="text/css" rel="stylesheet">
+<head>
+  <title>ShoTheLove</title>
+</head>
+
+<style>
+#customers {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#customers td, #customers th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#customers tr:nth-child(even){background-color: #f2f2f2;}
+
+#customers tr:hover {background-color: #ddd;}
+
+#customers th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #04AA6D;
+  color: white;
+}
+
+/* Define variables for your colors */
+:root {
+  --color-shades-dark: rgb(25, 25, 25);
+}
+
+/* Use the alternative box model
+Details: <https://web.dev/learn/css/box-model/> */
+*{
+  box-sizing: border-box;
+}
+
+/* Basic font styling */
+body {
+  font-family: Segoe UI, system-ui, -apple-system, sans-serif;
+  font-size: 1.6rem;
+}
+
+/* Link styling */
+a {
+  --text-color: var(--color-shades-dark);
+  border-block-end: 3px solid var(--border-color, transparent);
+  color: var(--text-color);
+  display: inline-block;
+  margin-block-end: 0.5rem; /* See note at the bottom of this chapter */
+  margin-inline-end: 0.5rem;
+  padding: 0.1rem;
+  text-decoration: none;
+}
+
+/* Change the border-color on :hover and :focus */
+a:where(:hover, :focus) {
+  --border-color: var(--text-color);
+}
+</style>
+
+
+<body>
+
+    <h1>Navigation Demo</h1>
+	<a href="/home">Home</a>
+    <a href="/about-us">About us</a>
+    <a href="/pricing">Pricing</a>
+    <a href="/contact">Contact</a>
+	
+   <h2>PvP March layers</h2>  
+   <form action="/action_page.php" method="get">
+   <form action="/action_page.php">
+    <label for="TopTier">Choose top tier</label>
+    <select id="tier" name="tier">
+      <option value="t12">T12</option>
+      <option value="t13">T13</option>
+      <option value="t14">T14</option>
+    </select>
+	
+	<br> <br>
+	
+	<label for="TroopType">Choose troop type</label>
+    <select id="type" name="type">
+      <option value="ground">Ground</option>
+      <option value="ranged">Ranged</option>
+      <option value="mounted">Mounted</option>
+	  <option value="siege">Siege</option>
+    </select>
+  </form>
+     
+   <p>Enter march size</p>
+   <input type = "text" id = "size"> <br> <br>
+   <button id = "btn" onclick = "PrintLayers()"> Calculate Layers </button>
+   
+   <p id = "table"></p>
+   <table id="customers">
+  <tr>
+    <th>Tier</th>
+    <th>Ground</th>
+    <th>Ranged</th>
+	<th>Mounted</th>
+	<th>Siege</th>
+  </tr>
+  <tr>
+    <td>T14</td>
+    <td id='t14g'>0</td>
+    <td id='t14r'>0</td>
+	<td id='t14m'>0</td>
+	<td id='t14s'>0</td>
+  </tr>
+  <tr>
+    <td>T13</td>
+    <td id='t13g'>0</td>
+    <td id='t13r'>0</td>
+	<td id='t13m'>0</td>
+	<td id='t13s'>0</td>
+  </tr>
+    <tr>
+    <td>T12</td>
+    <td id='t12g'>0</td>
+    <td id='t12r'>0</td>
+	<td id='t12m'>0</td>
+	<td id='t12s'>0</td>
+  </tr>
+    <tr>
+    <td>T11</td>
+    <td id='t11g'>0</td>
+    <td id='t11r'>0</td>
+	<td id='t11m'>0</td>
+	<td id='t11s'>0</td>
+  </tr>
+  </tr>
+    <tr>
+    <td>T10</td>
+    <td id='t10g'>0</td>
+    <td id='t10r'>0</td>
+	<td id='t10m'>0</td>
+	<td id='t10s'>0</td>
+  </tr>
+  <tr>
+    <td>T1-T9</td>
+    <td id='t1g'>0</td>
+    <td id='t1r'>0</td>
+	<td id='t1m'>0</td>
+	<td id='t1s'>0</td>
+  </tr>
+
+
+</table>
+    
+   <script>
+      var table = document.getElementById("table");
+      function PrintLayers() {
+        var size = parseInt(document.getElementById("size").value)
+		var tier = document.getElementById("tier").value
+		var type = document.getElementById("type").value
+		 
+		t1g.innerText = '1000'
+		t1r.innerText = '1000'
+		t1m.innerText = '1000'
+		t1s.innerText = '1000'
+		t12g.innerText = '10000'
+		t12r.innerText = '10000'
+		t12m.innerText = '10000'
+		t12s.innerText = '10000'
+		 
+		if (type == 'ground') {
+			t12r.innerText = '30000'
+	    } else if  (type == 'mounted') {
+			t12g.innerText = '30000'
+		} else {
+			t12m.innerText = '30000'
+		} 
+		 
+		if (tier == 't13' || tier == 't14') {
+		    t10g.innerText = '1000'
+			t10r.innerText = '1000'
+			t10m.innerText = '1000'
+			t10s.innerText = '1000'
+			t13g.innerText = '10000'
+			t13r.innerText = '10000'
+			t13m.innerText = '10000'
+			t13s.innerText = '10000'
+			if (type == 'ground') {
+			   t13r.innerText = '30000'
+			} else if  (type == 'mounted') {
+			   t13g.innerText = '30000'
+			} else {
+			   t13m.innerText = '30000'
+			}
+		}
+		
+		if (tier == 't13' || tier == 't12') {
+		    t14g.innerText = '0'
+			t14r.innerText = '0'
+			t14m.innerText = '0'
+			t14s.innerText = '0'
+			t11g.innerText = '10000'
+			t11r.innerText = '10000'
+			t11m.innerText = '10000'
+			t11s.innerText = '10000'
+			if (type == 'ground') {
+			   t11r.innerText = '30000'
+			} else if  (type == 'mounted') {
+			   t11g.innerText = '30000'
+			} else {
+			   t11m.innerText = '30000'
+			}
+		}
+		
+		if (tier == 't12') {
+			t10g.innerText = '10000'
+			t10r.innerText = '10000'
+			t10m.innerText = '10000'
+			t10s.innerText = '10000'
+		    t13g.innerText = '0'
+			t13r.innerText = '0'
+			t13m.innerText = '0'
+			t13s.innerText = '0'
+			if (type == 'ground') {
+			   t10r.innerText = '30000'
+			   t12g.innerText = 0.5 * (size - 36000) - 50000
+			   t11g.innerText = 0.3 * (size - 36000) - 50000
+			   t10g.innerText = 0.2 * (size - 36000) - 50000
+			} else if  (type == 'mounted') {
+			   t10g.innerText = '30000'
+			   t12m.innerText = 0.5 * (size - 36000) - 50000
+			   t11m.innerText = 0.3 * (size - 36000) - 50000
+			   t10m.innerText = 0.2 * (size - 36000) - 50000
+			} else {
+			   t10m.innerText = '30000'
+			   if (type == 'ranged') {
+			      t12r.innerText = 0.5 * (size - 36000) - 50000
+				  t11r.innerText = 0.3 * (size - 36000) - 50000
+				  t10r.innerText = 0.2 * (size - 36000) - 50000
+			   } else {
+			      t12s.innerText = 0.5 * (size - 36000) - 50000
+				  t11s.innerText = 0.3 * (size - 36000) - 50000
+				  t10s.innerText = 0.2 * (size - 36000) - 50000
+			   }
+			}
+		}
+		
+		if (tier == 't13') {
+		    if (type == 'ground') {
+			   t13g.innerText = 0.5 * (size - 40000) - 50000
+			   t12g.innerText = 0.3 * (size - 40000) - 50000
+			   t11g.innerText = 0.2 * (size - 40000) - 50000
+			} else if  (type == 'mounted') {
+			   t13m.innerText = 0.5 * (size - 40000) - 50000
+			   t12m.innerText = 0.3 * (size - 40000) - 50000
+			   t11m.innerText = 0.2 * (size - 40000) - 50000
+			} else {
+			   if (type == 'ranged') {
+			      t12r.innerText = 0.5 * (size - 40000) - 50000
+				  t13r.innerText = 0.3 * (size - 40000) - 50000
+				  t11r.innerText = 0.2 * (size - 40000) - 50000
+			   } else {
+			      t13s.innerText = 0.5 * (size - 40000) - 50000
+				  t12s.innerText = 0.3 * (size - 40000) - 50000
+				  t11s.innerText = 0.2 * (size - 40000) - 50000
+			   }
+			}
+		}
+		 
+		if (tier == 't14') {
+		    t11g.innerText = '1000'
+			t11r.innerText = '1000'
+			t11m.innerText = '1000'
+			t11s.innerText = '1000'
+			t14g.innerText = '10000'
+			t14r.innerText = '10000'
+			t14m.innerText = '10000'
+			t14s.innerText = '10000'
+			if (type == 'ground') {
+			   t14r.innerText = '30000'
+			   t14g.innerText = 0.5 * (size - 44000) - 50000
+			   t13g.innerText = 0.3 * (size - 44000) - 50000
+			   t12g.innerText = 0.2 * (size - 44000) - 50000
+			} else if  (type == 'mounted') {
+			   t14g.innerText = '30000'
+			   t14m.innerText = 0.5 * (size - 44000) - 50000
+			   t13m.innerText = 0.3 * (size - 44000) - 50000
+			   t12m.innerText = 0.2 * (size - 44000) - 50000
+			} else {
+			   t14m.innerText = '30000'
+			   if (type == 'ranged') {
+			      t12r.innerText = 0.5 * (size - 44000) - 50000
+				  t13r.innerText = 0.3 * (size - 44000) - 50000
+				  t14r.innerText = 0.2 * (size - 44000) - 50000
+			   } else {
+			      t14s.innerText = 0.5 * (size - 44000) - 50000
+				  t13s.innerText = 0.3 * (size - 44000) - 50000
+				  t12s.innerText = 0.2 * (size - 44000) - 50000
+			   }
+			}
+			}
+		} 
+		
+		
+
+
+   </script>
+</body>
+</html>
+
+
+
+
+
+
